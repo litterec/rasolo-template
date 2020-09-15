@@ -11,9 +11,7 @@
     "version": "@dev",
     "authors":[{
         "name":["Andrew V. Galagan"],
-        "email":["andrew.galagan@gmail.com"],
-            "homepage": ["https://ra-solo.com.ua"],
-            "role": ["Developer"]
+        "email":["andrew.galagan@gmail.com"]
     }],
     "repositories": [
         {
