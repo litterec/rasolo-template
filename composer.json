@@ -1,0 +1,36 @@
+{
+    "name":"rasolo/rasolo-template",
+    "description":"The convenient way to create forms etc. in PHP",
+    "keywords": [
+        "rasolo",
+        "form-template",
+        "html-template"
+    ],
+   "homepage": "https://ra-solo.com.ua",
+    "license":"MIT",
+    "version": "@dev",
+    "authors":[{
+        "name":["Andrew V. Galagan"],
+        "email":["andrew.galagan@gmail.com"],
+            "homepage": "https://ra-solo.com.ua",
+            "role": "Developer"
+    }],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org"
+        }
+    ],
+    "type": "package",
+    "config": {
+        "vendor-dir":"vendor",
+        "preferred-install": "dist"
+    },
+    "autoload" : {
+        "exclude-from-classmap": [".settings/", ".git/", ".gitignore"]
+    },
+    "require":{
+        "php":">=5.3.0"
+    }
+
+}
