@@ -150,9 +150,6 @@ myvar_dump($test_templ,'$test_templ',1);
      public function set($tag, $value)
     {
         $this->tags[$tag] = $value;
-        if('header'==$tag){
-            rasolo_debug_to_file($this,'$header_is_added');
-        }
 //        if($this->debug_mode && verify_ip()){
 //            myvar_dump($tag,'$set tag 004');
 //            myvar_dump(array_keys($this->tags),'$this->tags 004');
@@ -172,13 +169,6 @@ myvar_dump($test_templ,'$test_templ',1);
 // The goal - is to substitute all tag names to one particular memory tag
      public function replaceOneTag($onetag)
      {
-         if('headerh1'==$onetag){
-             $all_memory_tags=implode(', ',array_keys($this->tags));
-             rasolo_debug_to_file($all_memory_tags,'$all_memory_tags');
-             rasolo_debug_to_file($this,'headerh1_is_replacing');
-         }
-
-
          if(empty($this->tags[$onetag])){
              return $this;
          }
