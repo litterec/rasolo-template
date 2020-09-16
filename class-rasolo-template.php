@@ -39,7 +39,7 @@ myvar_dump($test_templ,'$test_templ',1);
      // Tags array
      private $tags = [];
      private $tag_keys = [];
-     private $already_rendered = [];
+     private $already_subst = [];
      private $default_template = false;
 
      public function __construct($templateFile=false)
@@ -74,7 +74,7 @@ myvar_dump($test_templ,'$test_templ',1);
      public function add($some_html)
      {
          $this->template = $this->template.$some_html;
-        return $this;
+         return $this;
      }
 
      public function add_from_file($templateFile,$tpl_group='main')
@@ -150,6 +150,9 @@ myvar_dump($test_templ,'$test_templ',1);
      public function set($tag, $value)
     {
         $this->tags[$tag] = $value;
+        if('header'==$tag){
+            rasolo_debug_to_file($this,'$header_is_added');
+        }
 //        if($this->debug_mode && verify_ip()){
 //            myvar_dump($tag,'$set tag 004');
 //            myvar_dump(array_keys($this->tags),'$this->tags 004');
@@ -169,6 +172,13 @@ myvar_dump($test_templ,'$test_templ',1);
 // The goal - is to substitute all tag names to one particular memory tag
      public function replaceOneTag($onetag)
      {
+         if('headerh1'==$onetag){
+             $all_memory_tags=implode(', ',array_keys($this->tags));
+             rasolo_debug_to_file($all_memory_tags,'$all_memory_tags');
+             rasolo_debug_to_file($this,'headerh1_is_replacing');
+         }
+
+
          if(empty($this->tags[$onetag])){
              return $this;
          }
@@ -217,13 +227,19 @@ myvar_dump($test_templ,'$test_templ',1);
 //             $cnt_before[]=count($this->tags);
              foreach ($this->tags as $tag => $value) {
 
-                if(in_array($tag,$this->already_rendered)){
+                if(in_array($tag,$this->already_subst)){
                      continue;
                 }
 
                 if(strpos($this->template,'{'.$tag.'}')){
-                    $this->already_rendered[]=$tag;
-                    unset($this->tags[$tag]);
+
+                    $pattern='/\{(\w{1,10})\}/s';
+                    if(!preg_match($pattern, $this->tags[$tag] )){
+//                        rasolo_debug_to_file($tag,'newfiles');
+                        $this->already_subst[]=$tag;
+                        unset($this->tags[$tag]);
+                    };
+
                 }
 
                 $this->template = str_replace('{'.$tag.'}', $value, $this->template);
