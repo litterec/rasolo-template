@@ -1,4 +1,35 @@
 <?php
+
+//Example.
+//--------
+
+/*
+// The inial stage
+$test_templ=new RasoloTemplate();
+$test_templ->add('Tag first {first} Tag second {second} Tag third {third} ');
+$test_templ->set('first',' +++The first value itself+++ ');
+$test_templ->set('second',' +++The second value itself+++ ');
+$test_templ->set('third',' +++The third with the first inside {first}+++ ');
+
+
+// Now We could have such incomplete rendered string
+// string(142) "Tag first  +++The first value itself+++  Tag second  +++The second value itself+++  Tag third  +++The third with the first inside {first}+++  "
+
+// To avoid this we have two options
+//$test_templ->replaceAllTags('first');
+// The result is such as
+// string(165) "Tag first  +++The first value itself+++  Tag second  +++The second value itself+++  Tag third  +++The third with the first inside  +++The first value itself+++ +++  "
+
+// or
+$test_templ->replaceOneTag('third');
+// The result is the same
+// string(165) "Tag first  +++The first value itself+++  Tag second  +++The second value itself+++  Tag third  +++The third with the first inside  +++The first value itself+++ +++  "
+
+$rendered=$test_templ->get_rendered();
+myvar_dump($rendered,'$rendered',1);
+myvar_dump($test_templ,'$test_templ',1);
+*/
+
  class RasoloTemplate {
 
      // Template file
@@ -134,10 +165,12 @@
          return $this;
      }
 
+// Replace all existing tags in particular existing memory tag
+// The goal - is to substitute all tag names to one particular memory tag
      public function replaceOneTag($onetag)
      {
          if(empty($this->tags[$onetag])){
-             return;
+             return $this;
          }
 
          foreach ($this->tags as $tag => $value) {
@@ -156,7 +189,24 @@
 
          }
 
+         return $this;
      }
+
+// Replace some tag in other tags exept itself
+// The goal - is to substitute particular tag name to all memory tags
+     public function replaceAllTags($one_e_tag) {
+         if(empty($this->tags[$one_e_tag])){
+             return $this;
+         }
+         foreach ($this->tags as $tag => $value) {
+             if($tag==$one_e_tag){
+                 continue;
+             }
+             $this->tags[$tag] = str_replace('{'.$one_e_tag.'}', $this->tags[$one_e_tag], $this->tags[$tag]);
+         }
+         return $this;
+     }
+
      private function replaceTags()
      {
 
@@ -208,7 +258,7 @@
 //         myvar_dump($ic,'$ic',1);
 //         myvar_dump($tags_after,'$tags_after',1);
 
-         return true;
+         return $this;
      }
 
      // Render the build template
